@@ -16,7 +16,7 @@ To install the kids desktop you first need to install the awesome wm and git:
 
 ### Create new user for the kid
 
-To create a new user for the kid (replace <username> with an actual username):
+To create a new user for the kid (replace `<username>` with an actual username):
 
 `$ sudo useradd -m -G wheel <username>`
 
@@ -49,7 +49,7 @@ exec awesome
 
 ## Start Linux4Kids desktop
 
-Switch to another tty: <Ctrl>+<Alt>+<F2>
+Switch to another tty: `<Ctrl>+<Alt>+<F2>`
 
 Log into the kids account.
 
