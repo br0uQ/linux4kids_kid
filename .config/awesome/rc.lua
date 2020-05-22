@@ -18,6 +18,7 @@ local freedesktop = require("freedesktop")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+require("quitmenu")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -110,7 +111,7 @@ end
 
 -- app_drawer
 awful.util.mymainmenu = freedesktop.menu.build()
-local app_drawer_icon = wibox.widget.imagebox(icons .. "grid_white.svg")
+local app_drawer_icon = wibox.widget.imagebox(icons .. "grid_white.png")
 app_drawer_icon:connect_signal("button::press", function ()
     -- open app_drawer
     awful.util.mymainmenu:toggle()
@@ -118,10 +119,11 @@ app_drawer_icon:connect_signal("button::press", function ()
 end)
 
 -- power_menu
-local power_menu_icon = wibox.widget.imagebox(icons .. "poweroff_white.svg")
+local power_menu_icon = wibox.widget.imagebox(icons .. "poweroff_white.png")
 power_menu_icon:connect_signal("button::press", function()
     -- open power menu
     notify_todo("Open power menu")
+    exit_screen_show()
 end)
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
