@@ -82,6 +82,16 @@ terminal = "xterm"
 menubar.utils.terminal = terminal -- Set the terminal for applications that require it
 -- }}}
 
+-- {{{ Print ToDo using nauthy.notify
+local function notify_todo(s)
+    naughty.notify({ preset = naughty.config.presets.normal,
+        title = "ToDo",
+        text = s })
+end
+
+
+
+
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
@@ -104,6 +114,14 @@ local app_drawer_icon = wibox.widget.imagebox(icons .. "grid_white.svg")
 app_drawer_icon:connect_signal("button::press", function ()
     -- open app_drawer
     awful.util.mymainmenu:toggle()
+    notify_todo("Change design of App Drawer")
+end)
+
+-- power_menu
+local power_menu_icon = wibox.widget.imagebox(icons .. "poweroff_white.svg")
+power_menu_icon:connect_signal("button::press", function()
+    -- open power menu
+    notify_todo("Open power menu")
 end)
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
@@ -138,6 +156,7 @@ awful.screen.connect_for_each_screen(function(s)
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
             mytextclock,
+	    power_menu_icon,
         },
     }
 end)
