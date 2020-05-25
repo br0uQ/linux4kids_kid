@@ -46,32 +46,13 @@ local function get_extension(filename)
     return string.reverse(rev_ext)
 end
 
--- get all lines from a file, returns an empty
--- list/table if the file does not exist
-local function get_app_values(file)
-    values = {}
-    for line in io.lines(file) do 
-        local words = {}
-        line = line .. "="
-        for w in line:gmatch("(.-)=") do
-            table.insert(words, w)
-        end
-        -- only save value if new and valid
-        if #words == 2 and values[words[1]] == nil then
-            values[words[1]] = words[2]
-        end
-    end
-    return values
-end
-
 local function add_app(file)
-    local values = get_app_values(file)
-    local icon_path = menubar.utils.lookup_icon(values["Icon"])
-    local app_icon = wibox.widget.imagebox(icon_path)
+    local program = menubar.utils.parse_desktop_file(file)
+    local app_icon = wibox.widget.imagebox(program.icon_path)
     app_icon.resize = true
     app_icon.forced_width = icon_size
     app_icon.forced_height = icon_size
-    local name = wibox.widget.textbox(values["Name"])
+    local name = wibox.widget.textbox(program.Name)
     name.font = text_font
     local app = wibox.widget{
         {
@@ -88,6 +69,12 @@ local function add_app(file)
         },
         layout = wibox.layout.fixed.vertical
     }
+    app:buttons(gears.table.join(
+        awful.button({ }, 1, function()
+            app_drawer_hide()
+            awful.spawn.with_shell(program.cmdline)
+        end)
+    ))
     app_list_widget:add(app)
 end
 
