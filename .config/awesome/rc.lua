@@ -5,7 +5,6 @@ pcall(require, "luarocks.loader")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
-require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
 -- Theme handling library
@@ -15,10 +14,8 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 local freedesktop = require("freedesktop")
--- Enable hotkeys help widget for VIM and other apps
--- when client with a matching name is opened:
-require("awful.hotkeys_popup.keys")
 require("quitmenu")
+require("app_drawer")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -114,8 +111,10 @@ awful.util.mymainmenu = freedesktop.menu.build()
 local app_drawer_icon = wibox.widget.imagebox(icons .. "grid_white.png")
 app_drawer_icon:connect_signal("button::press", function ()
     -- open app_drawer
-    awful.util.mymainmenu:toggle()
+    -- awful.util.mymainmenu:toggle()
     notify_todo("Change design of App Drawer")
+    -- notify_todo(get_apps())
+    app_drawer_show()
 end)
 
 -- power_menu
