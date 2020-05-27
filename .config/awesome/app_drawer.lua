@@ -6,6 +6,7 @@ local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
 local lfs = require("lfs")
 local menubar = require("menubar")
+local naughty = require("naughty")
 
 local icons_dir = os.getenv("HOME") .. "/.config/awesome/icons/"
 local app_dir = os.getenv("HOME") .. "/.local/share/applications/"
@@ -17,26 +18,38 @@ local apps_title_font = beautiful.app_drawer_apps_title_font or "sans 70"
 local cols = 5
 local rows = 4
 
--- Commands
-local start_app = function(s)
-    awful.spawn.with_shell(s)
-end
-
 -- Title
 local apps_title_widget = wibox.widget.textbox("Apps")
 apps_title_widget.font = apps_title_font
 
 -- {{{ Buttons
-local app_list_widget = wibox.widget {
-    homogenous      = true,
-    spacing         = 30,
-    layout          = wibox.layout.grid,
-    expand          = "none",
-    forced_num_cols = cols,
-    forced_num_rows = rows,
-}
+local function create_app_list_page()
+    local app_list_widget = wibox.widget {
+        homogenous      = true,
+        spacing         = 30,
+        layout          = wibox.layout.grid,
+        expand          = "none",
+        forced_num_cols = cols,
+        forced_num_rows = rows,
+    }
 
-app_list_widget:set_orientation("vertical")
+    app_list_widget:set_orientation("vertical")
+    
+    return app_list_widget
+end
+
+local app_list_pages = {}
+local app_list_page = create_app_list_page()
+table.insert(app_list_pages, app_list_page)
+local page_selector = wibox.widget {
+    checked     = true,
+    color       = beautiful.bg_normal,
+    paddings    = 2,
+    shape       = gears.shape.circle,
+    widget      = wibox.widget.checkbox,
+}
+local page_selectors = {}
+table.insert(page_selectors, page_selector)
 
 -- Get file extension
 local function get_extension(filename)
@@ -45,6 +58,8 @@ local function get_extension(filename)
     local rev_ext = rev:sub(1,len)
     return string.reverse(rev_ext)
 end
+
+local app_count = 0
 
 local function add_app(file)
     local program = menubar.utils.parse_desktop_file(file)
@@ -75,7 +90,16 @@ local function add_app(file)
             awful.spawn.with_shell(program.cmdline)
         end)
     ))
-    app_list_widget:add(app)
+    app_count = app_count + 1
+    if app_count > 20 then
+        app_list_page = create_app_list_page()
+        table.insert(app_list_pages, app_list_page)
+        local selector = page_selector
+        selector.checked = false
+        table.insert(page_selectors, page_selector)
+        app_count = 1
+    end
+    app_list_page:add(app)
 end
 
 -- Get all local desktop files
@@ -120,12 +144,34 @@ app_drawer:buttons(gears.table.join(
     end)
 ))
 
+--local page_selector = wibox.widget.textbox("- - - - x")
+local page = 1
+local app_list_widget = wibox.container.background(app_list_pages[1])
+
+page_selector:buttons(gears.table.join(
+    awful.button({ }, 1, function()
+        -- cycle through pages
+        page = page + 1
+        if page > #app_list_pages then
+            page = 1
+        end
+        app_list_widget.widget = app_list_pages[page]
+    end)
+))
+
 app_drawer:setup {
     nil,
     {
         {
             nil,
             app_list_widget,
+            nil,
+            expand = "none",
+            layout = wibox.layout.align.horizontal
+        },
+        {
+            nil,
+            page_selector,
             nil,
             expand = "none",
             layout = wibox.layout.align.horizontal

@@ -13,7 +13,6 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
-local freedesktop = require("freedesktop")
 require("quitmenu")
 require("app_drawer")
 
@@ -107,11 +106,9 @@ local function set_wallpaper(s)
 end
 
 -- app_drawer
-awful.util.mymainmenu = freedesktop.menu.build()
 local app_drawer_icon = wibox.widget.imagebox(icons .. "grid_white.png")
 app_drawer_icon:connect_signal("button::press", function ()
     -- open app_drawer
-    -- awful.util.mymainmenu:toggle()
     notify_todo("Change design of App Drawer")
     -- notify_todo(get_apps())
     app_drawer_show()
