@@ -41,15 +41,38 @@ end
 local app_list_pages = {}
 local app_list_page = create_app_list_page()
 table.insert(app_list_pages, app_list_page)
-local page_selector = wibox.widget {
-    checked     = true,
-    color       = beautiful.bg_normal,
-    paddings    = 2,
-    shape       = gears.shape.circle,
-    widget      = wibox.widget.checkbox,
+local page_selectors = wibox.widget {
+    homogenous      = true,
+    layout          = wibox.layout.fixed.horizontal,
+    expand          = "none",
 }
-local page_selectors = {}
-table.insert(page_selectors, page_selector)
+local app_list_widget = wibox.container.background(app_list_pages[1])
+local page = 1
+local active_page_selector
+local function add_page_selector(index, check)
+    local page_selector = wibox.widget {
+        checked     = check,
+        color       = beautiful.bg_normal,
+        paddings    = 2,
+        shape       = gears.shape.circle,
+        widget      = wibox.widget.checkbox,
+    }
+    page_selector:buttons(gears.table.join(
+        awful.button({ }, 1, function()
+            -- cycle through pages
+            app_list_widget.widget = app_list_pages[index]
+            active_page_selector.checked = false
+            page_selector.checked = true
+            active_page_selector = page_selector
+        end)
+    ))
+
+    page_selectors:add(page_selector)
+    if check then
+        active_page_selector = page_selector
+    end
+end
+add_page_selector(1, true)
 
 -- Get file extension
 local function get_extension(filename)
@@ -60,6 +83,7 @@ local function get_extension(filename)
 end
 
 local app_count = 0
+
 
 local function add_app(file)
     local program = menubar.utils.parse_desktop_file(file)
@@ -94,9 +118,8 @@ local function add_app(file)
     if app_count > 20 then
         app_list_page = create_app_list_page()
         table.insert(app_list_pages, app_list_page)
-        local selector = page_selector
-        selector.checked = false
-        table.insert(page_selectors, page_selector)
+        page = page + 1
+        add_page_selector(page, false)
         app_count = 1
     end
     app_list_page:add(app)
@@ -144,20 +167,7 @@ app_drawer:buttons(gears.table.join(
     end)
 ))
 
---local page_selector = wibox.widget.textbox("- - - - x")
-local page = 1
-local app_list_widget = wibox.container.background(app_list_pages[1])
 
-page_selector:buttons(gears.table.join(
-    awful.button({ }, 1, function()
-        -- cycle through pages
-        page = page + 1
-        if page > #app_list_pages then
-            page = 1
-        end
-        app_list_widget.widget = app_list_pages[page]
-    end)
-))
 
 app_drawer:setup {
     nil,
@@ -171,7 +181,7 @@ app_drawer:setup {
         },
         {
             nil,
-            page_selector,
+            page_selectors,
             nil,
             expand = "none",
             layout = wibox.layout.align.horizontal
