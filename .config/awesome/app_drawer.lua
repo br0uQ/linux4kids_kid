@@ -17,6 +17,8 @@ local text_font = beautiful.app_drawer_font or "sans 14"
 local apps_title_font = beautiful.app_drawer_apps_title_font or "sans 70"
 local cols = 5
 local rows = 4
+local page_selector_size = beautiful.page_selector_size or dpi(16)
+local page_selectors_height = beautiful.page_selectors_height or dpi(36)
 
 -- Title
 local apps_title_widget = wibox.widget.textbox("Apps")
@@ -43,7 +45,9 @@ local app_list_page = create_app_list_page()
 table.insert(app_list_pages, app_list_page)
 local page_selectors = wibox.widget {
     homogenous      = true,
+    spacing         = 8,
     layout          = wibox.layout.fixed.horizontal,
+    forced_height   = page_selectors_height,
     expand          = "none",
 }
 local app_list_widget = wibox.container.background(app_list_pages[1])
@@ -56,6 +60,8 @@ local function add_page_selector(index, check)
         paddings    = 2,
         shape       = gears.shape.circle,
         widget      = wibox.widget.checkbox,
+        forced_width = page_selector_size,
+        forced_height = page_selector_size,
     }
     page_selector:buttons(gears.table.join(
         awful.button({ }, 1, function()
@@ -179,6 +185,7 @@ app_drawer:setup {
             expand = "none",
             layout = wibox.layout.align.horizontal
         },
+        nil,
         {
             nil,
             page_selectors,
@@ -186,12 +193,33 @@ app_drawer:setup {
             expand = "none",
             layout = wibox.layout.align.horizontal
         },
-        layout = wibox.layout.fixed.vertical
+        layout = wibox.layout.align.vertical
     },
     nil,
     expand = "none",
     layout = wibox.layout.align.vertical
 }
+app_drawer:setup {
+    nil,
+    {
+        nil,
+        app_list_widget,
+        nil,
+        expand = "none",
+        layout = wibox.layout.align.horizontal
+    },
+    {
+        nil,
+        page_selectors,
+        nil,
+        expand = "none",
+        layout = wibox.layout.align.horizontal
+    },
+    nil,
+    expand = "none",
+    layout = wibox.layout.align.vertical
+}
+
 --[[
 -- Old app_drawer design
 -- 
