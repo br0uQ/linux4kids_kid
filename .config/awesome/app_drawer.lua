@@ -173,32 +173,6 @@ app_drawer:buttons(gears.table.join(
     end)
 ))
 
-
-
-app_drawer:setup {
-    nil,
-    {
-        {
-            nil,
-            app_list_widget,
-            nil,
-            expand = "none",
-            layout = wibox.layout.align.horizontal
-        },
-        nil,
-        {
-            nil,
-            page_selectors,
-            nil,
-            expand = "none",
-            layout = wibox.layout.align.horizontal
-        },
-        layout = wibox.layout.align.vertical
-    },
-    nil,
-    expand = "none",
-    layout = wibox.layout.align.vertical
-}
 app_drawer:setup {
     nil,
     {
@@ -215,7 +189,6 @@ app_drawer:setup {
         expand = "none",
         layout = wibox.layout.align.horizontal
     },
-    nil,
     expand = "none",
     layout = wibox.layout.align.vertical
 }
