@@ -61,7 +61,6 @@ Start the Linux4Kids desktop:
 
 * Kid UI:
     * App Drawer:
-        * Make App Drawer scrollable
         * Automatic resizing of the app icons (fitting in different display dpi)
     * Create "Running Apps" View/Switcher and button in wibar
     * Cleanup Default `theme.lua`
