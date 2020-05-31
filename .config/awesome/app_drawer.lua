@@ -19,6 +19,7 @@ local cols = 5
 local rows = 4
 local page_selector_size = beautiful.page_selector_size or dpi(16)
 local page_selectors_height = beautiful.page_selectors_height or dpi(36)
+local app_drawer_bg = beautiful.app_drawer_bg or '#000000A0'
 
 -- Title
 local apps_title_widget = wibox.widget.textbox("Apps")
@@ -53,6 +54,8 @@ local page_selectors = wibox.widget {
 local app_list_widget = wibox.container.background(app_list_pages[1])
 local page = 1
 local active_page_selector
+local active_page = 1
+local page_selector_list = {}
 local function add_page_selector(index, check)
     local page_selector = wibox.widget {
         checked     = check,
@@ -70,6 +73,7 @@ local function add_page_selector(index, check)
             active_page_selector.checked = false
             page_selector.checked = true
             active_page_selector = page_selector
+            active_page = index
         end)
     ))
 
@@ -77,8 +81,33 @@ local function add_page_selector(index, check)
     if check then
         active_page_selector = page_selector
     end
+    table.insert(page_selector_list, page_selector)
 end
 add_page_selector(1, true)
+
+local function switch_page()
+    page_selector_list[active_page].checked = true
+    active_page_selector = page_selector_list[active_page]
+    app_list_widget.widget = app_list_pages[active_page]
+end
+
+local function select_previous_page()
+    page_selector_list[active_page].checked = false
+    active_page = active_page - 1
+    if active_page <= 0 then
+        active_page = #page_selector_list
+    end
+    switch_page()
+end
+
+local function select_next_page()
+    page_selector_list[active_page].checked = false
+    active_page = active_page + 1
+    if active_page > #page_selector_list then
+        active_page = 1
+    end
+    switch_page()
+end
 
 -- Get file extension
 local function get_extension(filename)
@@ -142,7 +171,7 @@ end
 app_drawer = wibox({visible = false, ontop = true, type = "normal"})
 awful.placement.maximize(app_drawer)
 
-app_drawer.bg = beautiful.exit_screen_bg or beautiful.wibar_bg or "#222222"
+app_drawer.bg = app_drawer_bg
 app_drawer.fg = beautiful.exit_screen_fg or beautiful.wibar_fg or "#FEFEFE"
 
 local app_drawer_grabber
@@ -170,6 +199,14 @@ app_drawer:buttons(gears.table.join(
     -- Right click - Hide app_drawer
     awful.button({ }, 3, function()
         app_drawer_hide()
+    end),
+    -- Scroll up - Show previous app drawer page
+    awful.button({ }, 4, function()
+        select_previous_page()
+    end),
+    -- Scroll down - Show next app drawer page
+    awful.button({ }, 5, function()
+        select_next_page()
     end)
 ))
 
