@@ -109,8 +109,6 @@ end
 local app_drawer_icon = wibox.widget.imagebox(icons .. "grid_white.png")
 app_drawer_icon:connect_signal("button::press", function ()
     -- open app_drawer
-    notify_todo("Change design of App Drawer")
-    -- notify_todo(get_apps())
     app_drawer_show()
 end)
 
@@ -118,7 +116,6 @@ end)
 local power_menu_icon = wibox.widget.imagebox(icons .. "poweroff_white.png")
 power_menu_icon:connect_signal("button::press", function()
     -- open power menu
-    notify_todo("Open power menu")
     exit_screen_show()
 end)
 
