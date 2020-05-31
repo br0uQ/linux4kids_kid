@@ -19,6 +19,7 @@ local cols = 5
 local rows = 4
 local page_selector_size = beautiful.page_selector_size or dpi(16)
 local page_selectors_height = beautiful.page_selectors_height or dpi(36)
+local app_drawer_bg = beautiful.app_drawer_bg or '#000000A0'
 
 -- Title
 local apps_title_widget = wibox.widget.textbox("Apps")
@@ -142,7 +143,7 @@ end
 app_drawer = wibox({visible = false, ontop = true, type = "normal"})
 awful.placement.maximize(app_drawer)
 
-app_drawer.bg = beautiful.exit_screen_bg or beautiful.wibar_bg or "#222222"
+app_drawer.bg = app_drawer_bg
 app_drawer.fg = beautiful.exit_screen_fg or beautiful.wibar_fg or "#FEFEFE"
 
 local app_drawer_grabber
