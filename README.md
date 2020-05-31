@@ -56,3 +56,15 @@ Log into the kids account.
 Start the Linux4Kids desktop:
 
 `$ startx`
+
+## ToDos
+
+* Kid UI:
+    * App Drawer:
+        * Make App Drawer scrollable
+        * Background for App Drawer
+        * Automatic resizing of the app icons (fitting in different display dpi)
+    * Create "Running Apps" View/Switcher and button in wibar
+    * Cleanup Default `theme.lua`
+* Parent UI
+    * Create Parent UI
