@@ -15,6 +15,7 @@ local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup")
 require("quitmenu")
 require("app_drawer")
+local running = require("running")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -86,9 +87,6 @@ local function notify_todo(s)
         text = s })
 end
 
-
-
-
 -- {{{ Wibar
 -- Create a textclock widget
 mytextclock = wibox.widget.textclock()
@@ -110,6 +108,13 @@ local app_drawer_icon = wibox.widget.imagebox(icons .. "grid_white.png")
 app_drawer_icon:connect_signal("button::press", function ()
     -- open app_drawer
     app_drawer_show()
+end)
+
+-- running_apps
+local running_apps_icon = wibox.widget.imagebox(icons .. "running.png")
+running_apps_icon:connect_signal("button::press", function ()
+    -- show running apps
+    running.show()
 end)
 
 -- power_menu
@@ -142,6 +147,7 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
 	    app_drawer_icon,
+        running_apps_icon,
         },
 	{ -- Middle widget
             -- Add buttons for HOME/BACK/APPs, etc
