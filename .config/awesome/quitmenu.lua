@@ -33,7 +33,7 @@ goodbye_widget.font = goodbye_font
 
 -- {{{ Buttons
 -- Poweroff
-local poweroff_icon = wibox.widget.imagebox(beautiful.exit_screen_poweroff_icon or icons_dir .. "poweroff_white.png")
+local poweroff_icon = wibox.widget.imagebox(beautiful.exit_screen_poweroff_icon or icons_dir .. "poweroff.png")
 poweroff_icon.resize = true
 poweroff_icon.forced_width = icon_size
 poweroff_icon.forced_height = icon_size
@@ -60,7 +60,7 @@ poweroff:buttons(gears.table.join(
     end)
 ))
 -- Reboot
-local reboot_icon = wibox.widget.imagebox(beautiful.exit_screen_reboot_icon or icons_dir .. "reboot_white.png")
+local reboot_icon = wibox.widget.imagebox(beautiful.exit_screen_reboot_icon or icons_dir .. "reboot.png")
 reboot_icon.resize = true
 reboot_icon.forced_width = icon_size
 reboot_icon.forced_height = icon_size
@@ -87,7 +87,7 @@ reboot:buttons(gears.table.join(
     end)
 ))
 -- Suspend
-local suspend_icon = wibox.widget.imagebox(beautiful.exit_screen_suspend_icon or icons_dir .. "suspend_white.svg")
+local suspend_icon = wibox.widget.imagebox(beautiful.exit_screen_suspend_icon or icons_dir .. "suspend.png")
 suspend_icon.resize = true
 suspend_icon.forced_width = icon_size
 suspend_icon.forced_height = icon_size
@@ -114,7 +114,7 @@ suspend:buttons(gears.table.join(
     end)
 ))
 -- Cancel
-local cancel_icon = wibox.widget.imagebox(beautiful.exit_screen_cancel_icon or icons_dir .. "cancel_white.png")
+local cancel_icon = wibox.widget.imagebox(beautiful.exit_screen_cancel_icon or icons_dir .. "cancel.png")
 cancel_icon.resize = true
 cancel_icon.forced_width = icon_size
 cancel_icon.forced_height = icon_size
@@ -145,7 +145,7 @@ cancel:buttons(gears.table.join(
 exit_screen = wibox({visible = false, ontop = true, type = "dock"})
 awful.placement.maximize(exit_screen)
 
-exit_screen.bg = beautiful.exit_screen_bg or beautiful.wibar_bg or "#444444"
+exit_screen.bg = beautiful.exit_screen_bg or "#000000A0"
 exit_screen.fg = beautiful.exit_screen_fg or beautiful.wibar_fg or "#FEFEFE"
 
 local exit_screen_grabber
