@@ -71,7 +71,7 @@ local popup2 = wibox({
 })
 awful.placement.maximize(popup2)
 popup2.widget = tasklist_widget
-popup2.bg = '#000000A0
+popup2.bg = '#000000A0'
 
 running.show = function()
     -- show running clients
