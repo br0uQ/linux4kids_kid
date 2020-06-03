@@ -20,6 +20,8 @@ local barcolor = gears.color({
 })
 
 theme.font          = "Roboto Bold 24"
+theme.tasklist_font = "Roboto Bold 8"
+theme.tasklist_plain_task_name = true
 
 theme.bg_normal     = barcolor
 theme.bg_focus      = "#535d6c"
