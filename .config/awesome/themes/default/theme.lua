@@ -5,15 +5,23 @@
 local theme_assets = require("beautiful.theme_assets")
 local xresources = require("beautiful.xresources")
 local dpi = xresources.apply_dpi
+local gears = require("gears")
 
 local gfs = require("gears.filesystem")
 local themes_path = gfs.get_themes_dir()
 
 local theme = {}
 
-theme.font          = "Roboto Bold 8"
+local barcolor = gears.color({
+    type    = "linear",
+    from    = { 40, 40 },
+    to      = { 40, 0 },
+    stops   = { {0, '#000000'}, {0.9, '#555555'} }
+})
 
-theme.bg_normal     = "#000000"
+theme.font          = "Roboto Bold 24"
+
+theme.bg_normal     = barcolor
 theme.bg_focus      = "#535d6c"
 theme.bg_urgent     = "#ff0000"
 theme.bg_minimize   = "#444444"
