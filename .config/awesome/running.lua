@@ -32,8 +32,8 @@ local tasklist_widget = awful.widget.tasklist {
     },
     layout  = {
         spacing = 5,
-        forced_num_rows = 2,
-        layout = wibox.layout.grid.horizontal
+        forced_num_rows = 1,
+        layout = wibox.layout.grid.vertical
     },
     widget_template = {
         {
@@ -43,23 +43,17 @@ local tasklist_widget = awful.widget.tasklist {
                     widget  = awful.widget.clienticon,
                 },
                 {
-                    id      = 'clientcontent',
-                    widget  = wibox.widget.imagebox,
-                    forced_height = 256,
-                    forced_width = 256,
-                },
-                {
                     id      = 'text_role',
                     widget  = wibox.widget.textbox,
                 },
-                layout = wibox.layout.fixed.vertical,
+                layout = wibox.layout.fixed.horizontal,
             },
             margins = 4,
             widget  = wibox.container.margin,
         },
         id              = 'background_role',
-        forced_width    = 256,
-        forced_height   = 1024,
+        forced_width    = 1024,
+        forced_height   = 96,
         widget          = wibox.container.background,
         create_callback = function(self, c, index, objects)
             self:get_children_by_id('clienticon')[1].client = c
