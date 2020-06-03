@@ -9,6 +9,7 @@ local awful = require("awful")
 local wibox = require("wibox")
 -- Theme handling library
 local beautiful = require("beautiful")
+local dpi       = require("beautiful.xresources").apply_dpi
 -- Notification library
 local naughty = require("naughty")
 local menubar = require("menubar")
@@ -106,14 +107,14 @@ local function set_wallpaper(s)
 end
 
 -- app_drawer
-local app_drawer_icon = wibox.widget.imagebox(icons .. "grid_white.png")
+local app_drawer_icon = wibox.widget.imagebox(icons .. "launch.png")
 app_drawer_icon:connect_signal("button::press", function ()
     -- open app_drawer
     app_drawer_show()
 end)
 
 -- power_menu
-local power_menu_icon = wibox.widget.imagebox(icons .. "poweroff_white.png")
+local power_menu_icon = wibox.widget.imagebox(icons .. "poweroff.png")
 power_menu_icon:connect_signal("button::press", function()
     -- open power menu
     exit_screen_show()
@@ -121,7 +122,6 @@ end)
 
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
-
 
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
@@ -139,18 +139,19 @@ awful.screen.connect_for_each_screen(function(s)
     -- Add widgets to the wibox
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
+        expand = "none",
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
 	    app_drawer_icon,
         },
-	{ -- Middle widget
+    	{ -- Middle widget
             -- Add buttons for HOME/BACK/APPs, etc
+            mytextclock,
             layout = wibox.layout.fixed.horizontal,
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             wibox.widget.systray(),
-            mytextclock,
 	    power_menu_icon,
         },
     }
