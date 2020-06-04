@@ -192,6 +192,10 @@ function app_drawer_show()
 end
 
 app_drawer:buttons(gears.table.join(
+    -- Left click - Hide app_drawer
+    awful.button({ }, 1, function()
+        app_drawer_hide()
+    end),
     -- Middle click - Hide app_drawer
     awful.button({ }, 2, function()
         app_drawer_hide()
@@ -226,8 +230,8 @@ app_drawer:setup {
         expand = "none",
         layout = wibox.layout.align.horizontal
     },
-    expand = "none",
-    layout = wibox.layout.align.vertical
+    expand  = "none",
+    layout  = wibox.layout.align.vertical,
 }
 
 --[[
