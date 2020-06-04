@@ -18,7 +18,7 @@ local tasklist_buttons = awful.util.table.join(
     -- This will also un-minimize the client, if needed
     c:raise()
     c:swap(awful.client.getmaster())
-    c.focus = c
+    c:emit_signal("request::activate", "mouse_enter", {raise = vi_focus})
   end)
 )
 

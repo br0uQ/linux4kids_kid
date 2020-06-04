@@ -5,6 +5,7 @@ pcall(require, "luarocks.loader")
 -- Standard awesome library
 local gears = require("gears")
 local awful = require("awful")
+require("awful.autofocus")
 -- Widget and layout library
 local wibox = require("wibox")
 -- Theme handling library
@@ -118,6 +119,42 @@ running_apps_icon:connect_signal("button::press", function ()
     running.show()
 end)
 
+-- close app button
+local close_app_button = awful.widget.tasklist {
+    screen   = screen[1],
+    filter   = awful.widget.tasklist.filter.focused,
+    buttons  = awful.util.table.join(
+        awful.button({ }, 1, function (c)
+            -- close client
+            c:kill()
+        end)),
+    style    = {
+        shape_border_width = 1,
+        shape_border_color = '#777777',
+        shape  = gears.shape.rounded_bar,
+    },
+    layout   = {
+        spacing = 10,
+        spacing_widget = {
+            {
+                forced_width = 5,
+                shape        = gears.shape.circle,
+                widget       = wibox.widget.separator
+            },
+            valign = 'center',
+            halign = 'center',
+            widget = wibox.container.place,
+        },
+        layout  = wibox.layout.flex.horizontal
+    },
+    -- Notice that there is *NO* wibox.wibox prefix, it is a template,
+    -- not a widget instance.
+    widget_template = {
+        widget = wibox.widget.imagebox,
+        image   = icons .. "close_app.png",
+    },
+}
+
 -- power_menu
 local power_menu_icon = wibox.widget.imagebox(icons .. "poweroff.png")
 power_menu_icon:connect_signal("button::press", function()
@@ -157,8 +194,9 @@ awful.screen.connect_for_each_screen(function(s)
         },
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
+            close_app_button,
             wibox.widget.systray(),
-	    power_menu_icon,
+	        power_menu_icon,
         },
     }
 end)
