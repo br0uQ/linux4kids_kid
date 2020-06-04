@@ -165,6 +165,17 @@ end)
 -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
 screen.connect_signal("property::geometry", set_wallpaper)
 
+local sep = wibox.widget {
+    widget      = wibox.widget.separator,
+    opacity     = 1,
+    orientation = "vertical",
+    border_width    = 0,
+    border_color    = '#FFFFFF',
+    forced_width    = 24,
+}
+
+local space = wibox.widget.textbox(" ")
+
 awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
     set_wallpaper(s)
@@ -184,8 +195,10 @@ awful.screen.connect_for_each_screen(function(s)
         expand = "none",
         { -- Left widgets
             layout = wibox.layout.fixed.horizontal,
-	    app_drawer_icon,
-        running_apps_icon,
+            space,
+	        app_drawer_icon,
+            sep,
+            running_apps_icon,
         },
     	{ -- Middle widget
             -- Add buttons for HOME/BACK/APPs, etc
@@ -195,7 +208,9 @@ awful.screen.connect_for_each_screen(function(s)
         { -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             close_app_button,
+            sep,
             wibox.widget.systray(),
+            sep,
 	        power_menu_icon,
         },
     }
