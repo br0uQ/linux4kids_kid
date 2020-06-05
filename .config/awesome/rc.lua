@@ -25,7 +25,8 @@ local running = require("running")
 if awesome.startup_errors then
     naughty.notify({ preset = naughty.config.presets.critical,
                      title = "Oops, there were errors during startup!",
-                     text = awesome.startup_errors })
+                     text = awesome.startup_errors,
+                     font = "Sans 8" })
 end
 
 -- Handle runtime errors after startup
@@ -38,7 +39,8 @@ do
 
         naughty.notify({ preset = naughty.config.presets.critical,
                          title = "Oops, an error happened!",
-                         text = tostring(err) })
+                         text = tostring(err),
+                         font = "Sans 8" })
         in_error = false
     end)
 end
@@ -86,7 +88,8 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 local function notify_todo(s)
     naughty.notify({ preset = naughty.config.presets.normal,
         title = "ToDo",
-        text = s })
+        text = s,
+        font = "Sans 16" })
 end
 
 -- {{{ Wibar
@@ -155,26 +158,82 @@ local close_app_button = awful.widget.tasklist {
     },
 }
 
+local audio_slider_widget = wibox.widget {
+    bar_shape           = gears.shape.rounded_rect,
+    bar_height          = 3,
+    bar_color           = '#A0A0A0',
+    handle_color        = '#A0A0A0',
+    handle_shape        = gears.shape.circle,
+    handle_border_color = beautiful.border_color,
+    handle_border_width = 1,
+    widget              = wibox.widget.slider,
+    forced_width        = 350,
+    forced_height       = 20,
+}
+
+-- ToDo get current volume
+-- audio_slider_widget.value = --curent volume
+local get_volume_command = "amixer get 'Master'"
+awful.spawn.easy_async(get_volume_command, function(stdout, stderr, reason, exit_code)
+    local volume = stdout:match("%[(%d+)%%%]")
+    audio_slider_widget.value = tonumber(volume)
+end)
+
+local volume_down_button = wibox.widget.imagebox(icons .. "minus.png")
+volume_down_button:connect_signal("button::press", function()
+    audio_slider_widget.value = audio_slider_widget.value - 10
+end)
+local volume_up_button = wibox.widget.imagebox(icons .. "plus.png")
+volume_up_button:connect_signal("button::press", function()
+    audio_slider_widget.value = audio_slider_widget.value + 10
+end)
+
+local minus_container = wibox.container.margin()
+minus_container.widget = volume_down_button
+minus_container.margins = 20
+
+local plus_container = wibox.container.margin()
+plus_container.widget = volume_up_button
+plus_container.margins = 20
+
 local audio_control_widget = wibox.widget {
     layout = wibox.layout.fixed.horizontal,
-    {
-        widget  = wibox.widget.imagebox,
-        image   = icons .. "minus.png",
-    },
-    --{
-        -- slider widget
-    --},
-    {
-        widget  = wibox.widget.imagebox,
-        image   = icons .. "plus.png",
-    },
+    minus_container,
+    audio_slider_widget,
+    plus_container,
 }
+
+local audio_popup = awful.popup {
+    widget          = audio_control_widget,
+    border_color    = '#303030',
+    border_width    = 7,
+    preferred_positions = 'top',
+--    preferred_anchors   = 'middle',
+    shape           = function(cr, width, height)
+        gears.shape.rounded_rect(cr, width, height, 45)
+    end,
+    visible         = false,
+    maximum_height  = 120,
+    bg              = '#DFDFDF',
+    ontop           = true,
+}
+
+audio_slider_widget:connect_signal("widget::redraw_needed", function()
+    -- called when slider value changes
+    local set_volume_cmd = "amixer set 'Master' " .. tostring(audio_slider_widget.value) .. "%"
+    awful.spawn.with_shell(set_volume_cmd)
+end)
 
 -- audio_control
 local audio_control_icon = wibox.widget.imagebox(icons .. "audio.png")
 audio_control_icon:connect_signal("button::press", function()
     -- open audio control
-    notify_todo("Open audio slider")
+    if audio_popup.visible then
+        audio_popup.visible = false
+    else
+        audio_popup:move_next_to(mouse.current_widget_geometry)
+        audio_popup.visible = true
+    end
 end)
 
 -- power_menu
