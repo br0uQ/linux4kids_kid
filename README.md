@@ -62,7 +62,19 @@ Start the Linux4Kids desktop:
 * Kid UI:
     * App Drawer:
         * Automatic resizing of the app icons (fitting in different display dpi)
-    * Create "Running Apps" View/Switcher and button in wibar
-    * Cleanup Default `theme.lua`
+        * Dynamic layouting of the app drawer depending on the display size and dpi
+    * App runner view:
+        * Show client content
+    * Cleanup code (maybe use extra lua files)
+    * Reformat clock and date in wibar to be easier for children (maybe analog clock)
 * Parent UI
     * Create Parent UI
+* Search for some applications for kids
+* List of required applications/packages
+* Create live iso
+
+## Other
+
+### Icons
+
+* Everaldo: Kids Icons (ToDo: Add Link)
