@@ -155,6 +155,28 @@ local close_app_button = awful.widget.tasklist {
     },
 }
 
+local audio_control_widget = wibox.widget {
+    layout = wibox.layout.fixed.horizontal,
+    {
+        widget  = wibox.widget.imagebox,
+        image   = icons .. "minus.png",
+    },
+    --{
+        -- slider widget
+    --},
+    {
+        widget  = wibox.widget.imagebox,
+        image   = icons .. "plus.png",
+    },
+}
+
+-- audio_control
+local audio_control_icon = wibox.widget.imagebox(icons .. "audio.png")
+audio_control_icon:connect_signal("button::press", function()
+    -- open audio control
+    notify_todo("Open audio slider")
+end)
+
 -- power_menu
 local power_menu_icon = wibox.widget.imagebox(icons .. "poweroff.png")
 power_menu_icon:connect_signal("button::press", function()
@@ -210,6 +232,8 @@ awful.screen.connect_for_each_screen(function(s)
             close_app_button,
             sep,
             wibox.widget.systray(),
+            sep,
+            audio_control_icon,
             sep,
 	        power_menu_icon,
         },
