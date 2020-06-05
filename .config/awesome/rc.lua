@@ -160,15 +160,15 @@ local close_app_button = awful.widget.tasklist {
 
 local audio_slider_widget = wibox.widget {
     bar_shape           = gears.shape.rounded_rect,
-    bar_height          = 3,
+    bar_height          = dpi(3),
     bar_color           = '#A0A0A0',
     handle_color        = '#A0A0A0',
     handle_shape        = gears.shape.circle,
     handle_border_color = beautiful.border_color,
-    handle_border_width = 1,
+    handle_border_width = dpi(1),
     widget              = wibox.widget.slider,
-    forced_width        = 350,
-    forced_height       = 20,
+    forced_width        = dpi(350),
+    forced_height       = dpi(20),
 }
 
 -- ToDo get current volume
@@ -190,11 +190,12 @@ end)
 
 local minus_container = wibox.container.margin()
 minus_container.widget = volume_down_button
-minus_container.margins = 20
+minus_container.margins = dpi(20)
+
 
 local plus_container = wibox.container.margin()
 plus_container.widget = volume_up_button
-plus_container.margins = 20
+plus_container.margins = dpi(20)
 
 local audio_control_widget = wibox.widget {
     layout = wibox.layout.fixed.horizontal,
@@ -206,14 +207,14 @@ local audio_control_widget = wibox.widget {
 local audio_popup = awful.popup {
     widget          = audio_control_widget,
     border_color    = '#303030',
-    border_width    = 7,
+    border_width    = dpi(7),
     preferred_positions = 'top',
 --    preferred_anchors   = 'middle',
     shape           = function(cr, width, height)
-        gears.shape.rounded_rect(cr, width, height, 45)
+        gears.shape.rounded_rect(cr, width, height, dpi(45))
     end,
     visible         = false,
-    maximum_height  = 120,
+    maximum_height  = dpi(120),
     bg              = '#DFDFDF',
     ontop           = true,
 }
@@ -252,7 +253,7 @@ local sep = wibox.widget {
     orientation = "vertical",
     border_width    = 0,
     border_color    = '#FFFFFF',
-    forced_width    = 24,
+    forced_width    = dpi(24),
 }
 
 local space = wibox.widget.textbox(" ")
