@@ -69,7 +69,14 @@ Start the Linux4Kids desktop:
     * Reformat clock and date in wibar to be easier for children (maybe analog clock)
 * Parent UI
     * Create Parent UI
-* Search for some applications for kids
+* Search for some applications for kids:
+    * NiceToHave apps:
+        * web browser
+        * music player
+        * image viewer
+        * Minimal file browser (e.g. to move downloaded files to a pictures or music folder)
+        * Painting app
+        * Games
 * List of required applications/packages
 * Create live iso
 
