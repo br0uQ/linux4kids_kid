@@ -167,8 +167,8 @@ local audio_slider_widget = wibox.widget {
     handle_border_color = beautiful.border_color,
     handle_border_width = dpi(1),
     widget              = wibox.widget.slider,
-    forced_width        = dpi(350),
-    forced_height       = dpi(20),
+    forced_width        = dpi(200),
+    forced_height       = dpi(10),
 }
 
 -- ToDo get current volume
@@ -207,14 +207,14 @@ local audio_control_widget = wibox.widget {
 local audio_popup = awful.popup {
     widget          = audio_control_widget,
     border_color    = '#303030',
-    border_width    = dpi(7),
+    border_width    = dpi(5),
     preferred_positions = 'top',
 --    preferred_anchors   = 'middle',
     shape           = function(cr, width, height)
-        gears.shape.rounded_rect(cr, width, height, dpi(45))
+        gears.shape.rounded_rect(cr, width, height, dpi(38))
     end,
     visible         = false,
-    maximum_height  = dpi(120),
+    maximum_height  = dpi(80),
     bg              = '#DFDFDF',
     ontop           = true,
 }
